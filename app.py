@@ -22,7 +22,7 @@ db.drop_tables([Snake])
 db.create_tables([Snake])
 
 Snake(name='Python', venomous=False).save()
-Snake(name='King', venomous=True).save()
+Snake(name='King Cobra', venomous=True).save()
 
 
 app = Flask(__name__)
@@ -35,41 +35,29 @@ def endpoint(id=None):
     if id:
         return jsonify(model_to_dict(Snake.get(Snake.id == id)))
     else:
-        people_list = []
-        for person in Snake.select():
-            people_list.append(model_to_dict(person))
-        return jsonify(people_list)
+        snake_list = []
+        for snake in Snake.select():
+            snake_list.append(model_to_dict(snake))
+        return jsonify(snake_list)
 
-  # if request.method =='PUT':
-  #   body = request.get_json()
-  #   Snake.update(body).where(Snake.id == id).execute()
-  #   return "Snake " + str(id) + " has been updated."
+  if request.method =='PUT':
+    body = request.get_json()
+    Snake.update(body).where(Snake.id == id).execute()
+    return "Snake " + str(id) + " has been updated."
 
-  # if request.method == 'POST':
-  #   new_person = dict_to_model(Snake, request.get_json())
-  #   new_person.save()
-  #   return jsonify({"success": True})
+  if request.method == 'POST':
+    new_snake = dict_to_model(Snake, request.get_json())
+    new_snake.save()
+    return jsonify({"success": True})
 
-  # if request.method == 'DELETE':
-  #   Snake.delete().where(Snake.id == id).execute()
-  #   return "Snake " + str(id) + " deleted."
+  if request.method == 'DELETE':
+    Snake.delete().where(Snake.id == id).execute()
+    return "Snake " + str(id) + " deleted."
 
 
 @app.route('/')
 def index():
   return "Hello, world!"
-
-# @app.route('/say-hello/<name>')
-# def sayHello(name):
-#  return f"Hello, {name}!"
-
-# @app.route('/get-json')
-# def get_json():
-#   return jsonify({
-#     "name": "Garfield",
-#     "hatesMondays": True,
-#     "friends": ["Sheldon", "Wade", "Orson", "Squeak"]
-#   })
 
 
 app.run(port=5000, debug=True)
