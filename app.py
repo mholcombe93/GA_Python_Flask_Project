@@ -16,5 +16,17 @@ app = Flask(__name__)
 def index():
   return "Hello, world!"
 
+@app.route('/say-hello/<name>')
+def sayHello(name):
+ return f"Hello, {name}!"
 
-  app.run()
+@app.route('/get-json')
+def get_json():
+  return jsonify({
+    "name": "Garfield",
+    "hatesMondays": True,
+    "friends": ["Sheldon", "Wade", "Orson", "Squeak"]
+  })
+
+
+app.run(port=5000, debug=True)
